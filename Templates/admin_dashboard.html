@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin: 0;">Welcome, Admin!</h2>
+            <button class="logout-btn" onclick="location.href='/logout'">Logout</button>
+        </div>
+        <p>Use the buttons below to manage the library:</p>
+        <br>    
+        <nav style="gap: 25px; margin-bottom: 20px;">
+            <a href="#" onclick="showUsers()" class="nav-link">View Users</a>
+            <a href="/add_book" class="nav-link">Add Book</a>
+            <a href="/view_books" class="nav-link">View Books</a>
+            <a href="/issue_book" class="nav-link">Issue Book</a>
+            <a href="/return_book" class="nav-link">Return Book</a>
+        </nav>
+        <style>
+            .nav-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.2s;
+            font-weight: 500;
+            }
+            .nav-link:hover {
+            background: #0056b3;
+            }
+        </style>
+        <div id="user-list-container"></div>
+    </div>
+    <footer style="position: fixed; bottom: 0; left: 0; width: 100%; background: #f8f8f8; text-align: center; padding: 10px 0;">
+        <p>&copy; 2025 Library Management System</p>
+    </footer>
+    <script>
+        function showUsers() {
+            fetch('/view_users')
+                .then(response => response.json())
+                .then(data => {
+                    let users = Array.isArray(data) ? data : data.users;
+                    let userTable = '<h2><center>Registered Users</center></h2>';
+                    if (users && Array.isArray(users) && users.length > 0) {
+                        userTable += `
+                            <table border="1" cellpadding="8" style="margin:auto;">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+                        users.forEach(user => {
+                            const id = user[0] !== undefined ? user[0] : 'Unknown';
+                            const name = user[1] !== undefined ? user[1] : 'Unknown';
+                            const email = user[5] !== undefined ? user[5] : 'Unknown';
+                            const phone = user[4] !== undefined ? user[4] : 'Unknown';
+                            userTable += `<tr><td>${id}</td><td>${name}</td><td>${email}</td><td>${phone}</td></tr>`;
+                        });
+                        userTable += `
+                                </tbody>
+                            </table>
+                        `;
+                    } else {
+                        userTable += '<p>No users found.</p>';
+                    }
+                    document.getElementById('user-list-container').innerHTML = userTable;
+                })
+                .catch(error => {
+                    document.getElementById('user-list-container').innerHTML = '<p style="color:red;">Error fetching users.</p>';
+                    console.error('Error fetching users:', error);
+                });
+        }
+    </script>
+</body>
+</html>

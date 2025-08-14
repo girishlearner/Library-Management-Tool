@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Admin Login</h1>
+    <form id="myForm" action="{{ url_for('admin_validation') }}" method="POST">
+        <label for="admin_username">Username:</label>
+        <input type="text" id="admin_username" name="admin_username" required>
+        <br>
+        <label for="admin_password">Password:</label>
+        <input type="password" id="admin_password" name="admin_password" required>
+        <br>
+        <button type="submit">Login</button>
+    </form>
+    <!-- <div id="result"></div> -->
+    <!-- <script>
+      document.getElementById('myForm').onsubmit = function(event) {
+        event.preventDefault(); // Prevent a full page reload
+        fetch('/admin_validation', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            admin_username: document.getElementById('admin_username').value,
+            admin_password: document.getElementById('admin_password').value
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('result').innerText = data.message;
+        });
+      }
+    </script> -->
+</body>
+</html>
